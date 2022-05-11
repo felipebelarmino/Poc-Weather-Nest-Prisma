@@ -1,5 +1,5 @@
 # PoC-FullStack-PL
-<p align="justify"> Este projeto é uma PoC (Prova de Conceito) de um sistema web de filmes.</p>
+<p align="justify"> Este projeto é uma PoC (Prova de Conceito) de um sistema web de previsão do tempo.</p>
 
 ### Instruções
 1. Criar um fork deste repositório, transforme ele em privado, adicione o nosso usuário (brazil-analytics1) como colaborador e implemente o aplicativo conforme instruções abaixo.
@@ -26,20 +26,21 @@ O objetivo do teste é conhecer as habilidades em:
 - Lógica
 
 # To-Do List
-Que tal desenvolvermos um sistema de filmes favoritos para que as pessoas consigam fazer uma lista dos filmes que elas mais gostam?
+Que tal desenvolvermos um sistema de previsão do tempo para que as pessoas consigam fazer uma lista e acompanhar os dias que mais a interessam?
 
 ### Então você vai precisar:
 - Criar a estrutura de projeto utilizando as melhores técnicas que facilitem a manutenção futura do projeto
 - Criar a estrutura de banco de dados
-- Popular a tabela de filmes (recomendo consumir a API do The Movie DB ou omdbapi)
+- Popular a tabela de previsão do tempo com dados atuais (recomendo consumir a API do HGBrasil ou openweathermap)
+- Popular a tabela de previsão do tempo com dados de previsão (recomendo consumir a API do HGBrasil ou openweathermap)
 - Criar sistema de autenticação para que o usuário se cadastre e consiga efetuar login
  - Criar os endpoints para:
   - Cadastrar usuário
   - Efetuar login para poder consumir o restante da API
-  - Listar os filmes cadastrados no banco
-  - Listar os filmes que o usuário salvou como favorito
-  - Salvar um filme como favorito
-  - Remover um filme da lista de favoritos do usuário
+  - Listar os dados atuais da previsão do tempo
+  - Listar os dados de previsão do tempo (forecast)
+  - Salvar um dia de previsão como favorito
+  - Remover um dia de previsão da lista de favoritos do usuário
 - Criar o front de todas as telas integrando com as APIs criadas
 Não esqueça das validações!
 
