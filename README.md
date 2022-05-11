@@ -34,7 +34,7 @@ Que tal desenvolvermos um sistema de previsão do tempo para que as pessoas cons
 - Popular a tabela de previsão do tempo com dados atuais (recomendo consumir a API do HGBrasil ou openweathermap)
 - Popular a tabela de previsão do tempo com dados de previsão (recomendo consumir a API do HGBrasil ou openweathermap)
 - Criar sistema de autenticação para que o usuário se cadastre e consiga efetuar login
- - Criar os endpoints para:
+- Criar os endpoints para:
   - Cadastrar usuário
   - Efetuar login para poder consumir o restante da API
   - Listar os dados atuais da previsão do tempo
