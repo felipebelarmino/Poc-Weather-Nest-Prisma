@@ -5,7 +5,7 @@
 1. Criar um fork deste repositório, transforme ele em privado, adicione o nosso usuário (brazil-analytics1) como colaborador e implemente o aplicativo conforme instruções abaixo.
 2. Ao final envie um Pull Request
 3. Não se esqueça de enviar as instruções para rodar o projeto!
-4. Enviar um e-mail para rhbrasil@voltalia.com com:
+4. Enviar um e-mail para t.pussente@voltalia.com com:
     - Assunto "[Teste Asset - DI FullStack PL] - Nome do candidato"
     - Link: -> Repositório privado no Github.
 
