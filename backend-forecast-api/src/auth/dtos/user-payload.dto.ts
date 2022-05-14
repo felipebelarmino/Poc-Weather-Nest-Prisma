@@ -8,7 +8,7 @@ import {
 export class UserPayload {
   @IsNumber()
   @IsNotEmpty()
-  sub: Number;
+  sub: number;
 
   @IsString()
   @IsEmail()
