@@ -4,9 +4,14 @@ import {
   HttpStatus,
   Post,
   UseGuards,
+  Request,
+  Body,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { LoginDto } from './dtos/login.dto';
+import { UserToken } from './dtos/user-token.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
+import { AuthRequest } from './models/AuthRequest';
 
 @Controller()
 export class AuthController {
@@ -15,7 +20,10 @@ export class AuthController {
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard)
-  async login(): Promise<any> {
-    // return await this.authService.login();
+  async login(
+    @Body() login: LoginDto,
+    @Request() request: AuthRequest,
+  ): Promise<UserToken> {
+    return await this.authService.login(login, request.user);
   }
 }
