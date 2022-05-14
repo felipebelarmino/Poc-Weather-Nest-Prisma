@@ -14,7 +14,7 @@ export class AppController {
     return this.appService.getStatus();
   }
 
-  @Get('me')
+  @Get('/api/v1/me')
   async getMe(@CurrentUser() user: User): Promise<User> {
     return user;
   }
