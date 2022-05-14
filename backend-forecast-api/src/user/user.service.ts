@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
@@ -10,20 +14,38 @@ export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
-    const data: Prisma.UserCreateInput = {
-      ...createUserDto,
-      password: await bcrypt.hash(createUserDto.password, 10),
-    };
+    const { email } = createUserDto;
+    const userAlreadyExists = await this.findByEmail(email);
 
-    const createdUser = await this.prisma.user.create({ data });
+    if (userAlreadyExists) {
+      throw new ConflictException(`User already exists.`);
+    }
 
-    return {
-      password: undefined,
-      ...createdUser,
-    };
+    try {
+      const data: Prisma.UserCreateInput = {
+        ...createUserDto,
+        password: await bcrypt.hash(createUserDto.password, 10),
+      };
+
+      const createdUser = await this.prisma.user.create({ data });
+
+      return {
+        ...createdUser,
+        password: undefined,
+      };
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
-  findByEmail(email: string) {
-    return this.prisma.user.findUnique({ where: { email } });
+  async findByEmail(email: string) {
+    try {
+      return await this.prisma.user.findUnique({
+        rejectOnNotFound: true,
+        where: { email },
+      });
+    } catch (error) {
+      return null;
+    }
   }
 }
