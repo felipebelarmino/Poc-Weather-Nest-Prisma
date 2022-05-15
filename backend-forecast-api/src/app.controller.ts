@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Ip } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CurrentUser } from './auth/decorators/current-user.decorator';
 import { IsPublic } from './auth/decorators/is-public.decorator';
@@ -15,7 +15,10 @@ export class AppController {
   }
 
   @Get('/api/v1/me')
-  async getMe(@CurrentUser() user: User): Promise<User> {
-    return user;
+  async getMe(@CurrentUser() user: User, @Ip() ip): Promise<any> {
+    return {
+      user_ip: ip,
+      ...user,
+    };
   }
 }
