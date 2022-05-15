@@ -15,7 +15,9 @@ export class AppController {
   }
 
   @Get('/api/v1/me')
-  async getMe(@CurrentUser() user: User, @Ip() ip): Promise<any> {
+  async getMe(@CurrentUser() user: User, @Ip() ip): Promise<object> {
+
+
     return {
       user_ip: ip,
       ...user,

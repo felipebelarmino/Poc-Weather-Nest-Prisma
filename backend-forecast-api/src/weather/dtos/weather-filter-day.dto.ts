@@ -1,6 +1,6 @@
 import { IsNotEmpty, IsNumber, IsString } from "class-validator";
 
-export class WeatherFilterDto {
+export class WeatherFilterByDayDto {
   @IsString()
   @IsNotEmpty()
   city: string;
@@ -8,4 +8,10 @@ export class WeatherFilterDto {
   @IsString()
   @IsNotEmpty()
   state: string;
+
+  @IsNumber()
+  initial_day?: number;
+
+  @IsNumber()
+  final_day?: number;
 }
