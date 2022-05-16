@@ -1,9 +1,6 @@
-import { Body, Controller, Delete, Get, Ip, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { WeatherDto } from './dtos/weather.dto';
 import { WeatherFilterDto } from './dtos/weather-filter.dto';
-// import { AppService } from './app.service';
-// import { User } from './user/entities/user.entity';
-
 import { WeatherService } from './weather.service';
 import { Observable } from 'rxjs';
 import { AxiosResponse } from 'axios';

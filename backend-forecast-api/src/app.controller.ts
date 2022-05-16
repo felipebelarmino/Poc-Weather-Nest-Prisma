@@ -1,4 +1,4 @@
-import { Controller, Get, Header, Ip, Req } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CurrentUser } from './auth/decorators/current-user.decorator';
 import { IsPublic } from './auth/decorators/is-public.decorator';
@@ -19,10 +19,7 @@ export class AppController {
   }
 
   @Get('/api/v1/me')
-  async getMe(@CurrentUser() user: User, @Req() req: any): Promise<object> {
-
-    console.log(req.headers.access_token);
-
+  async getMe(@CurrentUser() user: User): Promise<object> {
     const userinfo = await this.prisma.user.findUnique({
       where: {
         id: user.id,

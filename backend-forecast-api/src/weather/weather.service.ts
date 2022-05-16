@@ -26,11 +26,13 @@ export class WeatherService {
     weatherFilter: WeatherFilterDto,
   ): Promise<Observable<AxiosResponse<WeatherDto>>> {
     try {
+      const hgbrasil_key = process.env.HG_BRASIL_KEY;
+
       const { city, state } = weatherFilter;
 
       const response = await lastValueFrom(
         this.httpService.get(
-          `https://api.hgbrasil.com/weather?key=d77b0250&city_name=${city},${state}`,
+          `https://api.hgbrasil.com/weather?key=${hgbrasil_key}&city_name=${city},${state}`,
         ),
       );
 
@@ -46,11 +48,13 @@ export class WeatherService {
     weatherFilter: WeatherFilterByDayDto,
   ): Promise<Forecast[]> {
     try {
+      const hgbrasil_key = process.env.HG_BRASIL_KEY;
+
       const { city, state, initial_day, final_day } = weatherFilter;
 
       const response = await lastValueFrom(
         this.httpService.get(
-          `https://api.hgbrasil.com/weather?key=d77b0250&city_name=${city},${state}`,
+          `https://api.hgbrasil.com/weather?key=${hgbrasil_key}&city_name=${city},${state}`,
         ),
       );
 
@@ -78,6 +82,15 @@ export class WeatherService {
     user: User,
   ): Promise<void> {
     const { email } = user;
+
+    const { initial_day, final_day } = weatherFilter;
+
+    if (
+      initial_day !== final_day ||
+      initial_day < 0 ||
+      final_day < 0
+    )
+      throw new BadRequestException('Invalid parameters.');
 
     try {
       const userExists = await this.prisma.user.findUnique({
