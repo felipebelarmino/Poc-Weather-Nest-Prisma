@@ -1,6 +1,6 @@
 export class Day {
   id?: number;
-  user?: number;
+  user?: any;
   userId?: number;
   date: string;
   weekday: string;

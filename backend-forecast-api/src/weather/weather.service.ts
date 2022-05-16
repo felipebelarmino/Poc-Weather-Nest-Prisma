@@ -1,19 +1,28 @@
-import { BadRequestException, Injectable, Ip } from '@nestjs/common';
+import {
+  BadRequestException,
+  ConflictException,
+  Injectable,
+} from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { AxiosResponse } from 'axios';
 import { lastValueFrom, Observable } from 'rxjs';
 import { WeatherDto } from './dtos/weather.dto';
 import { WeatherFilterDto } from './dtos/weather-filter.dto';
-import { Day } from './dtos/day-user.dto';
 import { Forecast } from './interfaces/forecast.interface';
 import { WeatherFilterByDayDto } from './dtos/weather-filter-day.dto';
+import { User } from 'src/user/entities/user.entity';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class WeatherService {
-  constructor(private httpService: HttpService) {}
+  constructor(
+    private httpService: HttpService,
+    private readonly prisma: PrismaService,
+    private readonly userService: UserService,
+  ) {}
 
   async getWeather(
-    ip,
     weatherFilter: WeatherFilterDto,
   ): Promise<Observable<AxiosResponse<WeatherDto>>> {
     try {
@@ -34,7 +43,6 @@ export class WeatherService {
   }
 
   async getWeatherByDay(
-    ip: any,
     weatherFilter: WeatherFilterByDayDto,
   ): Promise<Forecast[]> {
     try {
@@ -60,6 +68,58 @@ export class WeatherService {
       });
 
       return forecast;
+    } catch (error) {
+      throw new BadRequestException(`Error: ${error.message}`);
+    }
+  }
+
+  async addToFavorites(
+    weatherFilter: WeatherFilterByDayDto,
+    user: User,
+  ): Promise<void> {
+    const { email } = user;
+
+    try {
+      const userExists = await this.prisma.user.findUnique({
+        rejectOnNotFound: true,
+        where: { email },
+      });
+
+      if (userExists) {
+        const forecast = await this.getWeatherByDay(weatherFilter);
+
+        if (forecast.length === 0) {
+          throw new BadRequestException('Invalid parameters.');
+        }
+
+        const { city } = weatherFilter;
+
+        const dayAlreadyExists = await this.prisma.day.findFirst({
+          where: {
+            userId: userExists.id,
+            city: city,
+            date: forecast[0].date,
+          },
+        });
+
+        if (dayAlreadyExists) {
+          throw new ConflictException('Day already exists.');
+        }
+
+        await this.prisma.day.create({
+          data: {
+            city: city,
+            condition: forecast[0].condition,
+            date: forecast[0].date,
+            max: forecast[0].max,
+            min: forecast[0].min,
+            description: forecast[0].description,
+            weekday: forecast[0].weekday,
+            createdAt: new Date(),
+            user: { connect: { id: userExists.id } },
+          },
+        });
+      }
     } catch (error) {
       throw new BadRequestException(`Error: ${error.message}`);
     }
