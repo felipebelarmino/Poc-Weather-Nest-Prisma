@@ -5,13 +5,13 @@ import './style.css';
 function Login() {
   const { authenticated, login } = useContext(AuthContext);
 
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('submit', { username, password });
-    login(username, password);
+    console.log('submit', { email, password });
+    login(email, password);
   };
 
   return (
@@ -27,7 +27,7 @@ function Login() {
             name='email'
             id='email'
             placeholder='Email'
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 

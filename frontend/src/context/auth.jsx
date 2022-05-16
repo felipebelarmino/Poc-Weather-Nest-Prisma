@@ -1,35 +1,56 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
+import { api, createSession } from '../services/api';
 import { useNavigate } from 'react-router-dom';
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const login = (email, password) => {
-    if (password === 'senha') {
-      setUser({ id: 1, email });
-      navigate('/home');
-    }
+  useEffect(() => {
+    const userRecord = localStorage.getItem('user');
+    if (userRecord) setUser(JSON.parse(userRecord));
+    setLoading(false);
+  }, []);
+
+  const login = async (email, password) => {
+    const response = await createSession(email, password);
+    console.log('response', response);
 
     const loggedUser = {
-      id: 1,
-      email,
+      id: response.id,
+      name: response.name,
+      email: response.email,
     };
 
-    localStorage.setItem('user', JSON.stringify(loggedUser));
+    console.log(loggedUser)
 
-    console.log('login', { email, password });
+    const token = response.access_token;
+
+    localStorage.setItem('user', JSON.stringify(loggedUser));
+    localStorage.setItem('token', token);
+
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+
+    setUser(loggedUser);
+    navigate('/home');
+
+    console.log('login', response);
   };
   const logout = () => {
+    api.defaults.headers.Authorization = null;
+    console.log('logout');
+
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
     setUser(null);
     navigate('/login');
-    console.log('logout');
   };
 
   return (
     <AuthContext.Provider
-      value={{ authenticated: Boolean(user), user, login, logout }}
+      value={{ authenticated: Boolean(user), loading, user, login, logout }}
     >
       {children}
     </AuthContext.Provider>

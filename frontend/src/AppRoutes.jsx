@@ -6,7 +6,11 @@ import Home from './pages/Home/index.jsx';
 
 function AppRoutes() {
   function PrivateRoute({ children }) {
-    const { authenticated } = useContext(AuthContext);
+    const { authenticated, loading } = useContext(AuthContext);
+    if (loading) {
+      return <div>Carregando informações...</div>;
+    }
+
     if (!authenticated) return <Navigate to='/login' />;
     return children;
   }
@@ -15,7 +19,7 @@ function AppRoutes() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-          <Route path='/' element={<Navigate to='/login' />} />
+          <Route path='/' element={<Navigate to='/home' />} />
           <Route exact path='login' element={<Login />} />
           <Route
             exact
