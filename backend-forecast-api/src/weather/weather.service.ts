@@ -124,4 +124,36 @@ export class WeatherService {
       throw new BadRequestException(`Error: ${error.message}`);
     }
   }
+
+  async deleteFromFavorites(id: number, user: User): Promise<void> {
+    const { email } = user;
+
+    try {
+      const userExists = await this.prisma.user.findUnique({
+        rejectOnNotFound: true,
+        where: { email },
+      });
+
+      if (userExists) {
+        const favoriteDayExists = await this.prisma.day.findFirst({
+          where: {
+            userId: userExists.id,
+            id: id,
+          },
+        });
+
+        if (!favoriteDayExists) {
+          throw new BadRequestException('Day not found.');
+        }
+
+        await this.prisma.day.delete({
+          where: {
+            id: id,
+          },
+        });
+      }
+    } catch (error) {
+      throw new BadRequestException(`Error: ${error.message}`);
+    }
+  }
 }

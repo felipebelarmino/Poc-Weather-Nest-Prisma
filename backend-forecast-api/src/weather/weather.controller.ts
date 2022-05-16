@@ -38,11 +38,11 @@ export class WeatherController {
     return await this.weatherService.addToFavorites(weatherFilter, user);
   }
 
-  // @Delete('/favorite/:id')
-  // async deleteFavorite(
-  //   @Param('id') id: number,
-  //   @CurrentUser() user: User,
-  // ): Promise<void> {
-  //   return await this.weatherService.deleteFromFavorites(id, user);
-  // }// implementar delete
+  @Delete('/favorite/:id')
+  async deleteFavorite(
+    @Param('id') id: number,
+    @CurrentUser() user: User,
+  ): Promise<void> {
+    return await this.weatherService.deleteFromFavorites(id, user);
+  }
 }
