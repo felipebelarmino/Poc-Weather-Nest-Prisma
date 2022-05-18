@@ -19,4 +19,5 @@ import { WeatherModule } from './weather/weather.module';
     },
   ],
 })
+
 export class AppModule {}

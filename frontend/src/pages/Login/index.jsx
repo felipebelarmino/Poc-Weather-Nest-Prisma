@@ -43,7 +43,7 @@ function Login() {
         </div>
 
         <div className='actions'>
-          <button type='submit' className='button is-primary'>
+          <button type='submit' className='button-log'>
             Entrar
           </button>
         </div>

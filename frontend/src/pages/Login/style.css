@@ -9,6 +9,7 @@
 
 .form {
     background-color: #f1f1f1;
+    border: 2px solid lightgrey;
     width: 100%;
     max-width: 480px;
     padding: 2rem;
@@ -31,7 +32,7 @@
     border-radius: 0.25rem;
 }
 
-button {
+.button-log {
     width: 100%;
     padding: 0.6rem;
     border: none;

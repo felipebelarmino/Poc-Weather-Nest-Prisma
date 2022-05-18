@@ -9,7 +9,15 @@ export const createSession = async (email, password) => {
   return response.data;
 };
 
-export const getDays = async () => {
-    const response = await api.get('/me');
-    return response.data.days;
-}
+export const getMyFavoriteDays = async () => {
+  const response = await api.get('/me');
+  return response.data.days;
+};
+
+export const getDays = async (city, state) => {
+  const response = await api.get('/weather', {
+    params: { city: city, state: state },
+  });
+  
+  return response.data.results.forecast;
+};

@@ -10,7 +10,12 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const userRecord = localStorage.getItem('user');
-    if (userRecord) setUser(JSON.parse(userRecord));
+    const token = localStorage.getItem('token');
+
+    if (userRecord && token) {
+      setUser(JSON.parse(userRecord));
+      api.defaults.headers.Authorization = `Bearer ${token}`;
+    }
     setLoading(false);
   }, []);
 
@@ -24,7 +29,7 @@ export const AuthProvider = ({ children }) => {
       email: response.email,
     };
 
-    console.log(loggedUser)
+    console.log(loggedUser);
 
     const token = response.access_token;
 
@@ -38,6 +43,7 @@ export const AuthProvider = ({ children }) => {
 
     console.log('login', response);
   };
+  
   const logout = () => {
     api.defaults.headers.Authorization = null;
     console.log('logout');

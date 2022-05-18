@@ -14,12 +14,12 @@ import { UserToken } from './dtos/user-token.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { AuthRequest } from './models/AuthRequest';
 
-@Controller()
+@Controller('/api/v1/login')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @IsPublic()
-  @Post('/api/v1/login')
+  @Post()
   @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard)
   async login(
