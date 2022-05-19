@@ -8,14 +8,15 @@ import { Forecast } from './interfaces/forecast.interface';
 import { WeatherFilterByDayDto } from './dtos/weather-filter-day.dto';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { User } from 'src/user/entities/user.entity';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('/api/v1/weather')
 export class WeatherController {
   constructor(private readonly weatherService: WeatherService) {}
 
   @Get()
+  @ApiBearerAuth()
   async getWeather(
-    // @Body() weatherFilter: WeatherFilterDto,
     @Query('city') city: string,
     @Query('state') state: string,
   ): Promise<Observable<AxiosResponse<WeatherDto>>> {
@@ -28,7 +29,8 @@ export class WeatherController {
     return await this.weatherService.getWeather(weatherFilter);
   }
 
-  @Get('/filter')
+  @Post('/filter')
+  @ApiBearerAuth()
   async getWeatherByDay(
     @Body() weatherFilter: WeatherFilterByDayDto,
   ): Promise<Forecast[]> {
@@ -36,6 +38,7 @@ export class WeatherController {
   }
 
   @Post('/favorite')
+  @ApiBearerAuth()
   async favorite(
     @CurrentUser() user: User,
     @Body() weatherFilter: WeatherFilterByDayDto,
@@ -44,6 +47,7 @@ export class WeatherController {
   }
 
   @Delete('/favorite/:id')
+  @ApiBearerAuth()
   async deleteFavorite(
     @Param('id') id: number,
     @CurrentUser() user: User,

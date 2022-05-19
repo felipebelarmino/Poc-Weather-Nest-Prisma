@@ -13,6 +13,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UserService } from './user.service';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('/api/v1/user')
 export class UserController {
@@ -25,6 +26,7 @@ export class UserController {
   }
 
   @Put()
+  @ApiBearerAuth()
   @HttpCode(HttpStatus.OK)
   @UseGuards(LocalAuthGuard)
   async update(

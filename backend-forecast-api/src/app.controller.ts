@@ -4,6 +4,7 @@ import { CurrentUser } from './auth/decorators/current-user.decorator';
 import { IsPublic } from './auth/decorators/is-public.decorator';
 import { PrismaService } from './prisma/prisma.service';
 import { User } from './user/entities/user.entity';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller()
 export class AppController {
@@ -19,6 +20,7 @@ export class AppController {
   }
 
   @Get('/api/v1/me')
+  @ApiBearerAuth()
   async getMe(@CurrentUser() user: User): Promise<object> {
     const userinfo = await this.prisma.user.findUnique({
       where: {
